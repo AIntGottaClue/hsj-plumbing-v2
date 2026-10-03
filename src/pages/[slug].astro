@@ -5,6 +5,7 @@ import Cta from '../components/Cta.astro';
 import ContactForm from '../components/ContactForm.astro';
 import site from '../data/site.json';
 import { services, pages } from '../data/content.mjs';
+import { areas } from '../data/areas.mjs';
 import { u, img } from '../lib';
 export function getStaticPaths() {
   return pages.map((p) => ({ params: { slug: p.slug }, props: { page: p } }));
@@ -51,7 +52,7 @@ const relatedLabel = (s) => svc[s] || ({ 'our-process': 'Our process', 'service-
         <h2>Kent and Portage County</h2>
         <p>We are based in Kent and work across the older neighborhoods near downtown, the area around the university, and the streets near the Cuyahoga River. Rental properties, family homes and small commercial buildings all get the same careful look at the line.</p>
         <p>We also travel to nearby towns. If yours is not listed, call and ask.</p>
-        <ul class="towns">{page.towns.map((t) => <li>{t}</li>)}</ul>
+        <ul class="towns">{areas.map((a) => <li><a href={u('/service-areas/' + a.slug + '/')}>{a.name}</a></li>)}</ul>
         <div class="related"><a class="btn ghost" href={u('/services/')}>Services</a><a class="btn" href={u('/contact/')}>Request service</a></div>
       </div>
     </section>

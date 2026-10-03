@@ -1,6 +1,7 @@
 ---
 import site from '../data/site.json';
 import { services } from '../data/content.mjs';
+import { areas } from '../data/areas.mjs';
 import { u, img, tel, base } from '../lib';
 const { title, description = '', schema = [] } = Astro.props;
 const path = Astro.url.pathname;
@@ -10,7 +11,7 @@ const nav = [
   { title: 'Home', url: '/' },
   { title: 'Services', url: '/services/', children: services.map((s) => ({ title: s.title, url: '/' + s.slug + '/' })) },
   { title: 'Our Process', url: '/our-process/' },
-  { title: 'Service Areas', url: '/service-areas/' },
+  { title: 'Service Areas', url: '/service-areas/', children: areas.map((a) => ({ title: a.name, url: '/service-areas/' + a.slug + '/' })) },
   { title: 'FAQ', url: '/faq/' },
   { title: 'Guides', url: '/guides/' },
   { title: 'Contact', url: '/contact/' }

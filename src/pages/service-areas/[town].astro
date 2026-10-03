@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import Head from '../../components/Head.astro';
+import Cta from '../../components/Cta.astro';
+import site from '../../data/site.json';
+import { services } from '../../data/content.mjs';
+import { areas } from '../../data/areas.mjs';
+import { u, img } from '../../lib';
+export function getStaticPaths() {
+  return areas.map((a, i) => ({ params: { town: a.slug }, props: { area: a, i } }));
+}
+const { area, i } = Astro.props;
+const url = site.origin + Astro.url.pathname;
+const imgs = ['tech3', 'tech2', 'tech3'];
+const title = `Plumbing and Hydro Jetting in ${area.name}, Ohio | ${site.name}`;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebPage', name: `${area.name}, Ohio`, url, description: area.desc },
+  { '@context': 'https://schema.org', '@type': 'Service', name: `Hydro jetting and drain cleaning in ${area.name}, Ohio`, serviceType: 'Drain cleaning', areaServed: { '@type': 'City', name: `${area.name}, Ohio` }, provider: { '@type': 'Plumber', name: site.name } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.origin + u('/') },
+    { '@type': 'ListItem', position: 2, name: 'Service Areas', item: site.origin + u('/service-areas/') },
+    { '@type': 'ListItem', position: 3, name: area.name, item: url } ] }
+];
+---
+<Base title={title} description={area.desc} schema={schema}>
+  <Head title={`Serving ${area.name}, Ohio`} />
+  <section class="w prose-wrap">
+    <img class="side" src={img('images/' + imgs[i % 3] + '.jpg')} alt={`Technician serving ${area.name}`} />
+    <div class="prose">
+      <p>{area.lead}</p>
+      {area.sections.map((s) => <><h2>{s.h}</h2>{s.p.map((t) => <p>{t}</p>)}</>)}
+      <h2>Services in {area.name}</h2>
+      <ul class="towns">{services.map((s) => <li><a href={u('/' + s.slug + '/')}>{s.title}</a></li>)}</ul>
+      <h2>Other towns we serve</h2>
+      <ul class="towns">{areas.filter((a) => a.slug !== area.slug).map((a) => <li><a href={u('/service-areas/' + a.slug + '/')}>{a.name}</a></li>)}</ul>
+      <div class="related"><a class="btn ghost" href={u('/service-areas/')}>All service areas</a><a class="btn" href={u('/contact/')}>Request service</a></div>
+    </div>
+  </section>
+  <Cta />
+</Base>
