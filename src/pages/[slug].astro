@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import Head from '../components/Head.astro';
+import Cta from '../components/Cta.astro';
+import ContactForm from '../components/ContactForm.astro';
+import site from '../data/site.json';
+import { services, pages } from '../data/content.mjs';
+import { u, img } from '../lib';
+export function getStaticPaths() {
+  return pages.map((p) => ({ params: { slug: p.slug }, props: { page: p } }));
+}
+const { page } = Astro.props;
+const url = site.origin + Astro.url.pathname;
+const all = Object.fromEntries([...pages.map((p) => [p.slug, p.h1]), ['faq', 'FAQ'], ['our-process', 'Our process'], ['service-areas', 'Service areas']]);
+const svc = Object.fromEntries(services.map((s) => [s.slug, s.title]));
+const schema = [];
+if (page.kind === 'service') schema.push({ '@context': 'https://schema.org', '@type': 'Service', name: page.h1, serviceType: svc[page.slug], areaServed: 'Kent, Ohio', provider: { '@type': 'Plumber', name: site.name } });
+else if (page.kind === 'faq') schema.push({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: page.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });
+else schema.push({ '@context': 'https://schema.org', '@type': page.kind === 'contact' ? 'ContactPage' : 'WebPage', name: page.h1, url });
+const relatedLabel = (s) => svc[s] || ({ 'our-process': 'Our process', 'service-areas': 'Service areas', faq: 'FAQ' }[s]);
+---
+<Base title={page.title} description={page.desc} schema={schema}>
+  <Head title={page.h1} />
+  {page.kind === 'service' && (
+    <section class="w prose-wrap">
+      <img class="side" src={img('images/' + page.side + '.jpg')} alt={page.h1} />
+      <div class="prose">
+        {page.sections.map((s) => <><h2>{s.h}</h2>{s.p.map((t) => <p>{t}</p>)}</>)}
+        <div class="related">{page.related.map((r) => <a class="btn ghost" href={u('/' + r + '/')}>{relatedLabel(r)}</a>)}</div>
+      </div>
+    </section>
+  )}
+  {page.kind === 'services' && (
+    <section class="w stack"><ol class="rows">{services.map((s, i) => (
+      <li><a href={u('/' + s.slug + '/')}><span class="n">{String(i + 1).padStart(2, '0')}</span><span class="t">{s.title}</span><span class="d">{s.short}</span><span class="ar">&rarr;</span></a></li>
+    ))}</ol></section>
+  )}
+  {page.kind === 'process' && (
+    <section class="w prose-wrap">
+      <img class="side" src={img('images/tech2.jpg')} alt="Technician working at a cleanout" />
+      <div>
+        <ol class="steps">{page.steps.map((s) => <li><h3>{s.h}</h3><p>{s.p}</p></li>)}</ol>
+        <div class="related"><a class="btn ghost" href={u('/hydro-jetting/')}>Hydro Jetting</a><a class="btn ghost" href={u('/sewer-camera-inspection/')}>Camera inspection</a><a class="btn" href={u('/contact/')}>Request service</a></div>
+      </div>
+    </section>
+  )}
+  {page.kind === 'areas' && (
+    <section class="w prose-wrap">
+      <img class="side" src={img('images/tech3.jpg')} alt="Technician with jetting equipment" />
+      <div class="prose">
+        <h2>Kent and Portage County</h2>
+        <p>We are based in Kent and work across the older neighborhoods near downtown, the area around the university, and the streets near the Cuyahoga River. Rental properties, family homes and small commercial buildings all get the same careful look at the line.</p>
+        <p>We also travel to nearby towns. If yours is not listed, call and ask.</p>
+        <ul class="towns">{page.towns.map((t) => <li>{t}</li>)}</ul>
+        <div class="related"><a class="btn ghost" href={u('/services/')}>Services</a><a class="btn" href={u('/contact/')}>Request service</a></div>
+      </div>
+    </section>
+  )}
+  {page.kind === 'faq' && (
+    <section class="w faq stack">{page.faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+      <div class="related"><a class="btn ghost" href={u('/hydro-jetting/')}>Hydro Jetting</a><a class="btn ghost" href={u('/our-process/')}>Our process</a><a class="btn" href={u('/contact/')}>Request service</a></div>
+    </section>
+  )}
+  {page.kind === 'contact' && (
+    <section class="w cgrid"><div class="cinfo"><h2>Talk to a person</h2><p>Call, email or send the form. Tell us what the drain is doing and where.</p><p><strong><a href={'tel:' + site.phone.replace(/[^\d+]/g, '')}>{site.phone}</a></strong></p><p>{site.email}</p><p>Kent, Ohio</p></div><ContactForm title="Request service" /></section>
+  )}
+  {page.kind === 'legal' && (
+    <section class="w prose-wrap"><div></div><div class="prose">{page.sections.map((s) => <><h2>{s.h}</h2>{s.p.map((t) => <p>{t}</p>)}</>)}</div></section>
+  )}
+  <Cta />
+</Base>

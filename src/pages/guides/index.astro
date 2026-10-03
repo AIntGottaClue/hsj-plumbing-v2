@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import Head from '../../components/Head.astro';
+import { guides } from '../../data/content.mjs';
+import site from '../../data/site.json';
+import { u, img } from '../../lib';
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Drain and sewer guides', url: site.origin + Astro.url.pathname };
+---
+<Base title="Drain and Sewer Guides for Kent, Ohio | Kent Plumbing Pros" description="Plain guides on hydro jetting, older sewer lines and main line warning signs for Kent, Ohio property owners." schema={[ld]}>
+  <Head title="Drain and sewer guides" />
+  <section class="w stack"><div class="news">
+    {guides.map((p) => (
+      <a class="nc" href={u('/guides/' + p.slug + '/')}><img src={img('images/' + p.img + '.jpg')} alt="" loading="lazy" /><h3>{p.title}</h3><p>{p.excerpt}</p></a>
+    ))}
+  </div></section>
+</Base>

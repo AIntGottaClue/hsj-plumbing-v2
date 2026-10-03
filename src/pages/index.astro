@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Cta from '../components/Cta.astro';
+import site from '../data/site.json';
+import { services, guides } from '../data/content.mjs';
+import { u, img } from '../lib';
+const incl = ['Hydro jetting', 'Drain cleaning', 'Camera inspection', 'Root removal', 'Commercial lines'];
+const mosaic = ['ba1', 'hydro', 'roots2', 'clean', 'scale', 'sonic'];
+const alts = ['Clogged pipe compared with a jetted pipe', 'High-pressure water spray inside a pipe', 'Roots inside a sewer line', 'Clean pipe interior after jetting', 'Mineral scale on a pipe wall', 'Jetting nozzle cleaning a pipe'];
+const steps = [
+  { h: 'Call or send the form', p: 'Tell us which drains are affected and how long it has been happening.' },
+  { h: 'We look at the line', p: 'We decide whether a cable, jetting or a camera should come first.' },
+  { h: 'You see what we found', p: 'Camera footage and a plain explanation come before any repair decision.' }
+];
+const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Hydro Jetting and Drain Cleaning in Kent, Ohio', url: site.origin + Astro.url.pathname };
+---
+<Base title="Hydro Jetting and Drain Cleaning in Kent, Ohio | Kent Plumbing Pros" description="Hydro jetting, drain cleaning and sewer camera inspection for homes, rentals and businesses in Kent, Ohio and Portage County." schema={[ld]}>
+  <section class="hero">
+    <div class="w hgrid">
+      <div class="htext">
+        <h1>Hydro jetting and drain cleaning in Kent, Ohio</h1>
+        <div class="row"><a class="btn" href={u('/contact/')}>Request service</a><a class="btn ghost" href={u('/services/')}>See services</a></div>
+        <ul class="incl">{incl.map((i) => <li>{i}</li>)}</ul>
+      </div>
+      <div class="hmedia">
+        <div class="arch" style={`background-image:url('${img('images/hero.jpg')}')`}></div>
+        <div class="pill"><ContactForm title="Request service" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="w split">
+      <h2>One team for the whole line</h2>
+      <div>
+        <p>A slow kitchen sink, a gurgling floor drain and a backed up main can all start in different places. We look at the fixtures, find the cleanout and choose the tool that fits the pipe.</p>
+        <p>Older homes near downtown Kent, student rentals and small commercial buildings each wear their lines differently, so we ask questions before we start. If you want to understand the method first, read about <a href={u('/hydro-jetting/')}>hydro jetting</a> or <a href={u('/our-process/')}>how a call works</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="w stack">
+    <h2>What we do</h2>
+    <ol class="rows">
+      {services.map((s, i) => (
+        <li>
+          <a href={u('/' + s.slug + '/')}>
+            <span class="n">{String(i + 1).padStart(2, '0')}</span>
+            <span class="t">{s.title}</span>
+            <span class="d">{s.short}</span>
+            <span class="ar">&rarr;</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mosaic w">
+    <h2>Inside the pipes</h2>
+    <div class="mgrid">
+      {mosaic.map((g, i) => <img class={'m' + i} src={img('images/' + g + '.jpg')} alt={alts[i]} loading="lazy" />)}
+    </div>
+  </section>
+
+  <section class="quotes">
+    <div class="w qgrid">
+      <h2>How it works</h2>
+      {steps.map((t) => (
+        <figure><blockquote><p>{t.h}</p></blockquote><figcaption>{t.p}</figcaption></figure>
+      ))}
+      <figure><blockquote><p>The full process</p></blockquote><figcaption><a href={u('/our-process/')}>See the five steps</a></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="w stack">
+    <h2>Guides for Kent property owners</h2>
+    <div class="news">
+      {guides.map((p) => (
+        <a class="nc" href={u('/guides/' + p.slug + '/')}>
+          <img src={img('images/' + p.img + '.jpg')} alt="" loading="lazy" />
+          <h3>{p.title}</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+  <Cta />
+</Base>

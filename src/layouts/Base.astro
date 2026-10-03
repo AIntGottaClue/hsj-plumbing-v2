@@ -1,0 +1,84 @@
+---
+import site from '../data/site.json';
+import { services } from '../data/content.mjs';
+import { u, img, tel, base } from '../lib';
+const { title, description = '', schema = [] } = Astro.props;
+const path = Astro.url.pathname;
+const canonical = site.origin + path;
+const biz = { '@context': 'https://schema.org', '@type': ['Plumber', 'LocalBusiness'], name: site.name, telephone: site.phone, email: site.email, url: site.origin + base + '/', areaServed: { '@type': 'City', name: 'Kent, Ohio' }, address: { '@type': 'PostalAddress', addressLocality: 'Kent', addressRegion: 'OH', addressCountry: 'US' } };
+const nav = [
+  { title: 'Home', url: '/' },
+  { title: 'Services', url: '/services/', children: services.map((s) => ({ title: s.title, url: '/' + s.slug + '/' })) },
+  { title: 'Our Process', url: '/our-process/' },
+  { title: 'Service Areas', url: '/service-areas/' },
+  { title: 'FAQ', url: '/faq/' },
+  { title: 'Guides', url: '/guides/' },
+  { title: 'Contact', url: '/contact/' }
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <link rel="icon" href={img('images/favicon.png')} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href={u('/v2.css') + '?v=3'} />
+  <script type="application/ld+json" set:html={JSON.stringify(biz)} />
+  {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href={u('/')}><span class="mark">{site.initial}</span><span>{site.name}</span></a>
+    <input type="checkbox" id="nt" class="nt" />
+    <label for="nt" class="burger" aria-label="Menu"><i></i><i></i><i></i></label>
+    <nav>
+      {nav.map((m) => (
+        <div class="ni">
+          <a href={u(m.url)} class={path === u(m.url) ? 'on' : ''}>{m.title}</a>
+          {m.children && <div class="sub">{m.children.map((c) => <a href={u(c.url)}>{c.title}</a>)}</div>}
+        </div>
+      ))}
+      <a class="call" href={tel(site.phone)}>{site.phone}</a>
+    </nav>
+  </header>
+  <main><slot /></main>
+  <footer class="foot">
+    <div class="fwrap">
+      <div class="fbig">
+        <p class="fh">Clear pipes, clear answers.</p>
+        <a class="btn" href={u('/contact/')}>Request service</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Kent, Ohio</p>
+        <p><a href={tel(site.phone)}>{site.phone}</a></p>
+        <p><a href={'mailto:' + site.email}>{site.email}</a></p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        {services.map((s) => <p><a href={u('/' + s.slug + '/')}>{s.title}</a></p>)}
+      </div>
+      <div>
+        <h4>Company</h4>
+        <p><a href={u('/our-process/')}>Our Process</a></p>
+        <p><a href={u('/service-areas/')}>Service Areas</a></p>
+        <p><a href={u('/faq/')}>FAQ</a></p>
+        <p><a href={u('/guides/')}>Guides</a></p>
+        <p><a href={u('/privacy/')}>Privacy</a></p>
+        <p><a href={u('/terms/')}>Terms</a></p>
+      </div>
+    </div>
+    <p class="legal">&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+  </footer>
+  <a class="sticky-call" href={tel(site.phone)}>Call {site.phone}</a>
+</body>
+</html>

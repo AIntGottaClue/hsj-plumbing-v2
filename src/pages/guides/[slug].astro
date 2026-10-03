@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import Head from '../../components/Head.astro';
+import Cta from '../../components/Cta.astro';
+import { guides } from '../../data/content.mjs';
+import site from '../../data/site.json';
+import { u, img } from '../../lib';
+export function getStaticPaths() { return guides.map((p) => ({ params: { slug: p.slug }, props: { post: p } })); }
+const { post } = Astro.props;
+const ld = { '@context': 'https://schema.org', '@type': 'Article', headline: post.title, url: site.origin + Astro.url.pathname, publisher: { '@type': 'Plumber', name: site.name } };
+---
+<Base title={post.title + ' | Kent Plumbing Pros'} description={post.excerpt} schema={[ld]}>
+  <Head title={post.title} />
+  <section class="w prose-wrap"><img class="side" src={img('images/' + post.img + '.jpg')} alt="" /><div class="prose">{post.body.map((t) => <p>{t}</p>)}<div class="related"><a class="btn ghost" href={u('/hydro-jetting/')}>Hydro Jetting</a><a class="btn ghost" href={u('/sewer-camera-inspection/')}>Camera inspection</a></div></div></section>
+  <Cta />
+</Base>

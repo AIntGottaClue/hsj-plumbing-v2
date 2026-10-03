@@ -1,0 +1,9 @@
+---
+import site from '../data/site.json';
+import { u, tel } from '../lib';
+---
+<section class="cta">
+  <h2>Tell us what the drain is doing.</h2>
+  <p>Describe the clog, the backup or the slow drain and we will talk through the next step with you.</p>
+  <div class="row"><a class="btn" href={u('/contact/')}>Request service</a><a class="btn ghost" href={tel(site.phone)}>Call {site.phone}</a></div>
+</section>
