@@ -27,17 +27,18 @@ const nav = [
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
+  <meta name="theme-color" content="#0c3a63" />
   <link rel="icon" href={img('images/favicon.png')} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href={u('/v2.css') + '?v=3'} />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href={u('/v2.css') + '?v=5'} />
   <script type="application/ld+json" set:html={JSON.stringify(biz)} />
   {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
   <header class="top">
-    <a class="brand" href={u('/')}><span class="mark">{site.initial}</span><span>{site.name}</span></a>
+    <a class="brand" href={u('/')}><span class="mark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5c3.4 4.2 6 7.4 6 11a6 6 0 0 1-12 0c0-3.6 2.6-6.8 6-11z"/><path d="M9.2 14.2a3 3 0 0 0 2.6 2.6" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></span><span>{site.name}</span></a>
     <input type="checkbox" id="nt" class="nt" />
     <label for="nt" class="burger" aria-label="Menu"><i></i><i></i><i></i></label>
     <nav>
