@@ -97,7 +97,7 @@ h1{font-weight:800;letter-spacing:-.025em}h2{font-weight:700;letter-spacing:-.02
 .top nav .call{background:var(--clay);color:#fff}
 .arch{border-radius:18px 18px 18px 18px;border:6px solid #fff;box-shadow:0 18px 40px #0c3a6333}
 .band{background:linear-gradient(135deg,#0c3a63 0,#0a2c4c 100%);position:relative}
-.band:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,var(--lime) 0 40px,transparent 40px 52px)}
+.band:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--lime)}
 .rows a:hover{background:#d8f0f9}
 .rows .n{color:var(--clay)}
 .quotes{background:linear-gradient(180deg,#d8f0f9,#bfe6f4)}
@@ -106,7 +106,7 @@ h1{font-weight:800;letter-spacing:-.025em}h2{font-weight:700;letter-spacing:-.02
 .phead{border-radius:0;border-bottom:6px solid var(--lime);background:linear-gradient(135deg,#0c3a63,#0a2c4c)}
 .side{border-radius:18px}
 .cta{background:linear-gradient(135deg,#0a1c2e,#0c3a63);border-radius:20px;position:relative;overflow:hidden}
-.cta:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,var(--clay) 0 40px,transparent 40px 52px)}
+.cta:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--clay)}
 .foot{border-top:6px solid var(--clay)}
 .incl li,.towns li{border-color:var(--moss);background:#fff}
 .mgrid img,.nc img{border-radius:10px}
